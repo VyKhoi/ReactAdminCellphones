@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Table from "../components/table/Table";
 
-import customerList from "../assets/JsonData/customers-list.json";
+// import customerList from "../assets/JsonData/customers-list.json";
 
 const customerTableHead = ["Name", "Email", "Phone Number", "Hometown"];
 
@@ -10,10 +10,10 @@ const renderHead = (item, index) => <th key={index}>{item}</th>;
 
 const renderBody = (item, index) => (
   <tr key={index} onClick={handleClickProduct}>
-    <td>{item.Name}</td>
-    <td>{item.Email}</td>
+    <td>{item.name}</td>
+    <td>{item.email}</td>
     <td>{item.phoneNumber}</td>
-    <td>{item.Hometown}</td>
+    <td>{item.hometown}</td>
   </tr>
 );
 
@@ -23,6 +23,27 @@ function handleClickProduct(idProduct) {
   console.log(idProduct);
 }
 const Customers = () => {
+
+  const [customerList, setCustomerList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    // Gọi API hoặc lấy dữ liệu từ database tại đây
+    // Ví dụ:
+    fetch('https://localhost:8000/Admin/getAllCustomer')
+      .then(res => res.json())
+      .then((data) => {
+        setCustomerList(data)
+        setIsLoading(false)
+      }
+      )
+      .catch(err => console.error(err));
+  }, []); // Lưu ý tham số thứ hai của useEffect, truyền vào một mảng rỗng để useEffect chỉ chạy một lần khi component được mount
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <h2 className="page-header">customers</h2>

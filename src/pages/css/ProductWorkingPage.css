@@ -14,7 +14,7 @@
 .productBase_container {
     width: 100%;
     display: flex;
-    background-color: red;
+    background-color: rgb(255, 255, 255);
     justify-content: space-between;
     margin-bottom: 30px;
 }
@@ -26,13 +26,15 @@
 
 /* cc phần nhập hình ảnh */
 .productBaseImage_container {
-    background-color: greenyellow;
+    background-color: rgb(251, 251, 251);
     display: flex;
 }
 
 .productBaseImage_container_item {
     width: 50%;
-    background-color: gold;
+    background-color: rgb(152, 255, 250);
+    padding: 5px;
+    border-radius: 20px;
 
 }
 
@@ -42,14 +44,16 @@
 }
 
 .productBaseSpecifications_container {
-    background-color: rgb(122, 101, 241);
+    background-color: rgb(210, 255, 253);
     margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .productBaseSpecifications_container_item {
-    background-color: red;
+    /* background-color: rgb(255, 255, 255); */
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     margin: 20px;
 }
 

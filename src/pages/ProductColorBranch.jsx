@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../components/table/Table";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
-import listproductColorBranch from "../assets/JsonData/productColorBranch.json";
+// import listproductColorBranch from "../assets/JsonData/productColorBranch.json";
 
 const productColorBranchTableHead = [
   "idPC-Branch",
@@ -14,44 +14,69 @@ const productColorBranchTableHead = [
 ];
 
 const ProductColorBranch = () => {
+  const [branchId, setBranchId] = useState(1);
+  const [dsFillter, setDsFillter] = useState([]);
+  const [listproductColorBranch, setListproductColorBranch] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [key, setKey] = useState(0);
+
+
   const renderHead = (item, index) => <th key={index}>{item}</th>;
   const history = useHistory();
   const renderBody = (item, index) => (
-    <tr key={index} onClick={() => HandleClickProductColorBranch(item.id_bpc)}>
-      <td>{item.id_bpc}</td>
-      <td>{item.idBranch_id}</td>
-      <td>{item.Name}</td>
-      <td>{item.nameColor_id}</td>
-      <td>{item.Price}</td>
-      <td>{item.Type}</td>
-      <td>{item.Amount}</td>
+    <tr key={index} onClick={() => HandleClickProductColorBranch(item.idBPC)}>
+      <td>{item.idBPC}</td>
+      <td>{item.idBranch}</td>
+      <td>{item.nameProduct}</td>
+      <td>{item.nameColor}</td>
+      <td>{item.price}</td>
+      <td>{item.type}</td>
+      <td>{item.amount}</td>
     </tr>
   );
-  const [branchId, setBranchId] = useState(1);
-  const [dsFillter, setDsFillter] = useState([]);
-  const [key, setKey] = useState(1);
-  const [selectValue, setSelectValue] = useState("1");
 
+
+
+  // chuyển side working
   function HandleClickProductColorBranch(idPCB) {
-    history.push(`/productColorBranchWorkingPage/${idPCB}`);
+    const idPCBtmp = idPCB ? idPCB : "";
+    history.push(`/productColorBranchWorkingPage/${idPCBtmp}`);
     console.log("co click");
   }
 
   const handleBranchFilter = (event) => {
     const value = event.target.value;
-    setSelectValue(value);
+    console.log(event.target.value)
+    setBranchId(value)
   };
 
   useEffect(() => {
-    setBranchId(parseInt(selectValue));
-    setKey(key + 1);
-    const newDsFillter = listproductColorBranch.filter((h) => {
-      if (h.idBranch_id === branchId) return true;
-      else return false;
-    });
+    // Gọi API hoặc lấy dữ liệu từ database tại đây
+    // Ví dụ:
+    fetch('https://localhost:8000/Admin/getBranchProductColor')
+      .then(res => res.json())
+      .then((data) => {
+        setListproductColorBranch(data)
+        setIsLoading(false)
+      }
+      )
+      .catch(err => console.error(err));
+  }, []); // Lưu ý tham số thứ hai của useEffect, truyền vào một mảng rỗng để useEffect chỉ chạy một lần khi component được mount
 
-    setDsFillter(newDsFillter);
-  }, [selectValue, branchId]);
+  useEffect(() => {
+    const filteredList = listproductColorBranch.filter(
+      (item) => item.idBranch === parseInt(branchId)
+    );
+    setDsFillter(filteredList);
+    setKey(key + 1)
+  }, [branchId, listproductColorBranch]);
+
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div key={key}>

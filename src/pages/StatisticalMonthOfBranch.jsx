@@ -4,10 +4,26 @@ import "./css/StatisticalBranchOfMonth.css";
 
 function StatisticalMonthOfBranch() {
   const chartRef = useRef(null);
-  const [branchId, setBranchId] = useState("1");
+  const [month, setMonth] = useState("1");
+  const [selectedYear, setSelectedYear] = useState("");
+  // data 
+  const [data, setData] = useState([]);
+  const [nameBranch, setNameBranch] = useState([]);
+  const [valueStatistical, setValueStatistical] = useState([]);
+
+
+
+  // Handle select change
+  const handleYearSelect = (event) => {
+    setSelectedYear(event.target.value);
+  };
+  // Create an array with the last 3 years
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear - 1, currentYear - 2];
+
 
   const handleMonthSelect = (event) => {
-    setBranchId(event.target.value);
+    setMonth(event.target.value);
   };
 
   useEffect(() => {
@@ -16,10 +32,10 @@ function StatisticalMonthOfBranch() {
     new Chart(myChartRef, {
       type: "pie",
       data: {
-        labels: ["Cửa Hàng 1", "Cửa Hàng 2", "Cửa Hàng 3"],
+        labels: nameBranch,
         datasets: [
           {
-            data: [12, 19, 3],
+            data: valueStatistical,
             backgroundColor: ["#04c88d", "#ff0000", "#fff800"],
           },
         ],
@@ -29,7 +45,44 @@ function StatisticalMonthOfBranch() {
         maintainAspectRatio: false,
       },
     });
-  }, []);
+
+
+
+    console.log("davo bieu do ", nameBranch, valueStatistical)
+  }, [data]); // thay đổi data khi goi song
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://localhost:8000/Admin/statisticalBranchsOfMonth/${selectedYear}/${month}`);
+        const jsonData = await response.json();
+
+
+        console.log(jsonData)
+
+        // lấy tên cửa hàng
+        var tmpName = []
+        for (var i = 0; i < jsonData.length; i++) {
+          tmpName.push(jsonData[i].nameBranch)
+        }
+        setNameBranch(tmpName)
+
+        // lấy thông số thống kê
+        var tmpValue = []
+        for (var i = 0; i < jsonData.length; i++) {
+          tmpValue.push(jsonData[i].statistical)
+        }
+        setValueStatistical(tmpValue)
+        setData(jsonData);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [month, selectedYear]);
+
 
   return (
     <div>
@@ -40,12 +93,36 @@ function StatisticalMonthOfBranch() {
         id="month"
         name="month"
         className="select-month selectType"
-        value={branchId}
+        value={month}
         onChange={handleMonthSelect}
       >
         <option value="1">Tháng 1</option>
         <option value="2">Tháng 2</option>
         <option value="3">Tháng 3</option>
+        <option value="4">Tháng 4</option>
+        <option value="5">Tháng 5</option>
+        <option value="6">Tháng 6</option>
+        <option value="7">Tháng 7</option>
+        <option value="8">Tháng 8</option>
+        <option value="9">Tháng 9</option>
+        <option value="10">Tháng 10</option>
+        <option value="11">Tháng 11</option>
+        <option value="12">Tháng 12</option>
+      </select>
+
+      <select
+        id="year"
+        name="year"
+        className="select-year selectType"
+        value={selectedYear}
+        onChange={handleYearSelect}
+      >
+        <option value="">-- Chọn năm --</option>
+        {years.map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
       </select>
 
       <div className="pieChart-container">
@@ -56,15 +133,14 @@ function StatisticalMonthOfBranch() {
         </div>
 
         <div className="box-item-container">
-          <div className="box-item-number">
-            <h1>Cửa Hàng 1 là : </h1>
-          </div>
-          <div className="box-item-number">
-            <h1>Cửa Hàng 2 là : </h1>
-          </div>
-          <div className="box-item-number">
-            <h1>Cửa Hàng 3 là : </h1>
-          </div>
+
+          {data.map((item) => (
+            <div className="box-item-number">
+              <h1>{item.nameBranch} Doanh Thu :{item.statistical} </h1>
+            </div>
+          ))}
+
+
         </div>
       </div>
     </div>

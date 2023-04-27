@@ -41,7 +41,7 @@ const Routes = () => {
       <Route path="/productsWorkingPage/:id?" component={ProductWorkingPage} />
 
       <Route
-        path="/productColorBranchWorkingPage/:idbpc"
+        path="/productColorBranchWorkingPage/:idbpc?"
         component={ProductColorBranchWorkingPage}
       />
     </Switch>

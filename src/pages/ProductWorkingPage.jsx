@@ -70,23 +70,31 @@ const ProductWorkingPage = () => {
   //  lấy id của sản phẩm
   const { id } = useParams();
 
-  const [product, setProduct] = useState({});
 
-  //   khu vực lấy data
+  const [productWithID, setProductWithID] = useState([])
+  //   khu vực lấy data khi click chọn 1 product
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     async function fetchProduct() {
       try {
-        const response = await fetch(`/api/product/${id}`);
+        const response = await fetch(`https://localhost:8000/Admin/getInforProduct/${id}`);
         const data = await response.json();
-        setProduct(data);
+
+        setProductWithID(data)
+        autoUpdateFrom(data);
       } catch (error) {
         console.error(error);
         //  chỉ test xem thôi
-        autoUpdateFrom(productWithID);
+
       }
     }
     fetchProduct();
   }, [id]);
+
+
+
 
   function autoUpdateFrom(data) {
     if (data.name) {
@@ -162,11 +170,18 @@ const ProductWorkingPage = () => {
   }
 
   // ///////////
-
+  // hàm này dùng để thêm or sửa sản phẩm
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!id) {
-      CheckSelectNameImage();
+    console.log("id la ", id)
+
+    if (id == undefined) {
+      console.log("có vo if")
+      var rs = CheckSelectNameImage();
+      if (rs == -1) {
+        console.log("có sai")
+        return;
+      }
     }
     try {
       const urls = await uploadFiles();
@@ -184,7 +199,6 @@ const ProductWorkingPage = () => {
         manufacture,
         type,
         images: dsImage,
-
         title,
         content,
         cpu,
@@ -195,16 +209,82 @@ const ProductWorkingPage = () => {
         os,
         others,
       };
-      const response = await fetch("https://localhost:8000/Admin/addProduct", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
-      console.log(responseData);
-      clearForm();
+
+      if (!id) { // thêm sp
+        const response = await fetch("https://localhost:8000/Admin/addProduct", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+        if (responseData.hasOwnProperty("Id")) {
+          Swal.fire({
+            title: "Thêm Sản Phẩm Thành Công",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Thực hiện các thao tác cần thiết sau khi xóa thành công
+              clearForm();
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Thêm Thất Bại",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK",
+          })
+        }
+      }
+
+      // cập nhật sp
+      if (id) {
+        const response = await fetch("https://localhost:8000/Admin/updateProduct", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+        console.log(responseData);
+        if (responseData.value == 1) {
+          Swal.fire({
+            title: "Cập Nhật Sản Phẩm Thành Công",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Thực hiện các thao tác cần thiết sau khi xóa thành công
+              clearForm();
+            }
+          })
+        } else {
+          Swal.fire({
+            title: "Cập Nhật Thất Bại",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK",
+          })
+        }
+      }
+
     } catch (error) {
       console.log(error);
       clearForm();
@@ -258,9 +338,7 @@ const ProductWorkingPage = () => {
     }
   };
 
-  //   const handleDescriptionImageChange = (event) => {
-  //     setDescriptionImage(event.target.value);
-  //   };
+
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -310,7 +388,40 @@ const ProductWorkingPage = () => {
       confirmButtonText: "Xóa",
     }).then((result) => {
       if (result.isConfirmed) {
-        clearForm();
+        // clearForm();
+
+
+        fetch(`https://localhost:8000/Admin/deleteProduct/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            if (data.value == 1) {
+              console.log('Product successfully deleted');
+              Swal.fire({
+                title: "Xóa Thành Công",
+                icon: "success",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "OK",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Thực hiện các thao tác cần thiết sau khi xóa thành công
+                  clearForm();
+                }
+              })
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting product:', error);
+          });
+
+
       }
     });
   }
@@ -323,21 +434,18 @@ const ProductWorkingPage = () => {
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // clearForm();
-          return;
-        }
-      });
+      })
+
+      return -1;
     }
   }
 
   return (
     <div className="ProductWorkingPage__container">
-      <div>
+      {/* <div>
         {id && <p>Id của sản phẩm là: {id}</p>}
         {!id && <h1>Không có sản phẩm</h1>}
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit}>
         <div className="productBase_container">
@@ -390,7 +498,7 @@ const ProductWorkingPage = () => {
               type="file"
               id="files"
               multiple
-              //   value={file}
+              // value={file}
               onChange={handleFileChange}
             />
 

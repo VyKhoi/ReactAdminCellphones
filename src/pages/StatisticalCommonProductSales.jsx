@@ -6,10 +6,31 @@ function StatisticalCommonProductSales() {
   const chartRef = useRef(null);
   const [month, setMonth] = useState("1");
   const [branchId, setBranchId] = useState("1");
+  const [selectedYear, setSelectedYear] = useState("");
+  /// get data
+  const [data, setData] = useState([]);
+  const [listNameProduct, setListNameProduct] = useState([]);
+  const [amountOfProduct, setAmountOfProduct] = useState([]);
+
+  // Create an array with the last 3 years
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear - 1, currentYear - 2];
+
+
+  // Handle select change
+  const handleYearSelect = (event) => {
+    console.log(event.target.value)
+    setSelectedYear(event.target.value);
+  };
+  // handle  selected month
   const handleMonthSelect = (event) => {
+    console.log(event.target.value)
     setMonth(event.target.value);
   };
+
+  //handle select branchid
   const handleBranchSelect = (event) => {
+    console.log(event.target.value)
     setBranchId(event.target.value);
   };
 
@@ -19,16 +40,10 @@ function StatisticalCommonProductSales() {
     new Chart(myChartRef, {
       type: "pie",
       data: {
-        labels: [
-          "Iphone 3",
-          "Samsung j7",
-          "Redmi Note9s",
-          "iphone 4",
-          "Samsung A04",
-        ],
+        labels: listNameProduct,
         datasets: [
           {
-            data: [20, 10, 3, 12, 9],
+            data: amountOfProduct,
             backgroundColor: ["#04c88d", "#ff0000", "#fff800", "gray", "pink"],
           },
         ],
@@ -38,7 +53,46 @@ function StatisticalCommonProductSales() {
         maintainAspectRatio: false,
       },
     });
-  }, []);
+
+
+    console.log(listNameProduct, amountOfProduct)
+  }, [data]);
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://localhost:8000/Admin/statisticalTop5/${selectedYear}/${month}/${branchId}`);
+        const jsonData = await response.json();
+
+
+        console.log(jsonData)
+
+        // get  name product
+        var tmpName = []
+        for (var i = 0; i < jsonData.length; i++) {
+          tmpName.push(jsonData[i].nameProduct)
+        }
+        setListNameProduct(tmpName)
+
+        // get amount of each product 
+        var tmpValue = []
+        for (var i = 0; i < jsonData.length; i++) {
+          tmpValue.push(jsonData[i].totalAmountSale)
+        }
+        setAmountOfProduct(tmpValue)
+
+
+        setData(jsonData);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [month, selectedYear, branchId]);
+
 
   return (
     <div>
@@ -55,6 +109,32 @@ function StatisticalCommonProductSales() {
         <option value="1">Tháng 1</option>
         <option value="2">Tháng 2</option>
         <option value="3">Tháng 3</option>
+        <option value="4">Tháng 4</option>
+        <option value="5">Tháng 5</option>
+        <option value="6">Tháng 6</option>
+        <option value="7">Tháng 7</option>
+        <option value="8">Tháng 8</option>
+        <option value="9">Tháng 9</option>
+        <option value="10">Tháng 10</option>
+        <option value="11">Tháng 11</option>
+        <option value="12">Tháng 12</option>
+      </select>
+
+
+
+      <select
+        id="year"
+        name="year"
+        className="select-year selectType"
+        value={selectedYear}
+        onChange={handleYearSelect}
+      >
+        <option value="">-- Chọn năm --</option>
+        {years.map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
       </select>
 
       <select
@@ -69,6 +149,7 @@ function StatisticalCommonProductSales() {
         <option value="3">Cửa Hàng 3</option>
       </select>
 
+
       <div className="pieChart-container">
         <div className="pieChart-container-chart">
           {/* <div className="pieChart-container"> */}
@@ -77,15 +158,12 @@ function StatisticalCommonProductSales() {
         </div>
 
         <div className="box-item-container">
-          <div className="box-item-number">
-            <h1>Sp 1 </h1>
-          </div>
-          <div className="box-item-number">
-            <h1>Sp 1 </h1>
-          </div>
-          <div className="box-item-number">
-            <h1>Sp 1 </h1>
-          </div>
+          {data.map((item) => (
+            <div className="box-item-number">
+              <h1>{item.nameProduct} : {item.totalAmountSale} SP</h1>
+            </div>
+          ))}
+
         </div>
       </div>
     </div>

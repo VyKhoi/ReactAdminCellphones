@@ -1,6 +1,6 @@
 .ProductColorWorkingPage-Container {
-    background-color: red;
-
+    background-color: rgb(178, 252, 255);
+    padding: 5%;
 }
 
 .ProductColorWorkingPage-Container .submit_button {
