@@ -1,0 +1,31 @@
+.pcb-container {
+    background-color: rgba(21, 164, 197, 0.359);
+}
+
+.pcb-container .submit_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    position: relative;
+    float: right;
+}
+
+.pcb-item {
+    margin-bottom: 20px;
+}
+
+.pcb-item input {
+    border: 2px solid rgb(89, 2, 41);
+
+    background-color: yellow;
+    padding: 5px;
+    border-radius: 10px;
+}

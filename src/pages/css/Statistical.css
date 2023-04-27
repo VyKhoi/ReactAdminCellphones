@@ -1,0 +1,24 @@
+.statistical-container {
+    background-color: yellow;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.statistical-item {
+    background-color: rgb(13, 241, 195);
+    border-radius: 20px;
+    font-size: 1vw;
+    padding: 20px;
+    text-align: center;
+}
+
+.statistical-item:hover {
+    cursor: pointer;
+}
+
+.icon-pieChart {
+    display: block;
+    font-size: 50px;
+    color: rgb(7, 45, 81);
+}

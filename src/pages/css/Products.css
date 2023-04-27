@@ -1,0 +1,24 @@
+.addProduct {
+    background-color: #4CAF50;
+    /* Màu nền */
+    border: none;
+    /* Không có đường viền */
+    color: white;
+    /* Màu chữ */
+    padding: 10px 20px;
+    /* Khoảng cách đệm */
+    text-align: center;
+    /* Canh giữa nội dung */
+    text-decoration: none;
+    /* Không có gạch chân */
+    display: inline-block;
+    /* Hiển thị dạng khối */
+    font-size: 16px;
+    /* Cỡ chữ */
+    margin: 4px 2px;
+    /* Khoảng cách giữa các phần tử */
+    cursor: pointer;
+    /* Hiển thị kiểu con trỏ */
+    position: relative;
+    right: 0;
+}

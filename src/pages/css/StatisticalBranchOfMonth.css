@@ -1,0 +1,45 @@
+.pieChart-container-chart {
+    background-color: red;
+    width: 50%;
+    height: 400px;
+}
+
+.pieChart-container {
+    display: flex;
+}
+
+.box-item-number {
+    margin-bottom: 10px;
+    background-color: yellow;
+    font-size: 1vw;
+}
+
+.box-item-container {
+    padding-left: 10px;
+}
+
+
+/* select */
+.selectType {
+    width: 150px;
+
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #f70067;
+    font-size: 16px;
+    color: #ffffff;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 5px;
+}
+
+.selectType:focus,
+.selectType:hover {
+    border-color: #555;
+}
