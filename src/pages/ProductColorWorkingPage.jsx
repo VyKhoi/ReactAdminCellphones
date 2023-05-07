@@ -3,10 +3,8 @@ import "./css/ProductColorWorkingPage.css";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 function ProductColorWorkingPage() {
-
-
   const [productCode, setProductCode] = useState("");
-  const [productColor, setProductColor] = useState("");
+  const [productColor, setProductColor] = useState("Đen");
   const [productPrice, setProductPrice] = useState("");
   const { idPC } = useParams();
 
@@ -14,16 +12,15 @@ function ProductColorWorkingPage() {
   const [data, setData] = useState([]);
   useEffect(() => {
     fetch(`https://localhost:8000/Admin/getProductColor/${idPC}`)
-      .then(response => response.json())
-      .then(data => {
-        setProductCode(data.idProductId)
-        setProductColor(data.nameColorId)
-        setProductPrice(data.price)
-        setData(data)
+      .then((response) => response.json())
+      .then((data) => {
+        setProductCode(data.idProductId);
+        setProductColor(data.nameColorId);
+        setProductPrice(data.price);
+        setData(data);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }, []);
-
 
   function clearForm() {
     setProductCode("");
@@ -52,20 +49,20 @@ function ProductColorWorkingPage() {
         id: 0,
         price: parseFloat(productPrice),
         idProduct_Id: parseInt(productCode),
-        nameColor_Id: productColor
+        nameColor_Id: productColor,
       };
 
-      console.log(dataToSend)
-      fetch('https://localhost:8000/Admin/addProductColor', {
-        method: 'POST',
+      console.log(dataToSend);
+      fetch("https://localhost:8000/Admin/addProductColor", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend)
+        body: JSON.stringify(dataToSend),
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Response:', data);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Response:", data);
           if (data.value == 1) {
             Swal.fire({
               title: "Thêm Thành Công",
@@ -79,7 +76,7 @@ function ProductColorWorkingPage() {
                 // Thực hiện các thao tác cần thiết sau khi xóa thành công
                 clearForm();
               }
-            })
+            });
           } else {
             Swal.fire({
               title: "Thêm Thất Bại",
@@ -88,13 +85,11 @@ function ProductColorWorkingPage() {
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "OK",
-            })
+            });
           }
         })
-        .catch(error => console.error(error));
-
+        .catch((error) => console.error(error));
     }
-
 
     // cập nhật sửa  sản phẩm-color
     if (idPC) {
@@ -102,20 +97,20 @@ function ProductColorWorkingPage() {
         id: idPC,
         price: parseFloat(productPrice),
         idProduct_Id: parseInt(productCode),
-        nameColor_Id: productColor
+        nameColor_Id: productColor,
       };
 
-      console.log(dataToSend)
-      fetch('https://localhost:8000/Admin/updateProductColor', {
-        method: 'POST',
+      console.log(dataToSend);
+      fetch("https://localhost:8000/Admin/updateProductColor", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend)
+        body: JSON.stringify(dataToSend),
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Response:', data);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Response:", data);
           if (data.value == 1) {
             Swal.fire({
               title: "Sửa Thành Công",
@@ -129,7 +124,7 @@ function ProductColorWorkingPage() {
                 // Thực hiện các thao tác cần thiết sau khi xóa thành công
                 clearForm();
               }
-            })
+            });
           } else {
             Swal.fire({
               title: "Thêm Thất Bại",
@@ -138,17 +133,12 @@ function ProductColorWorkingPage() {
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "OK",
-            })
+            });
           }
         })
-        .catch(error => console.error(error));
-
+        .catch((error) => console.error(error));
     }
-
-
   };
-
-
 
   // xử lý xóa sản phẩm
   function handleDelete(idProduct) {
@@ -161,18 +151,17 @@ function ProductColorWorkingPage() {
       confirmButtonText: "Xóa",
     }).then((result) => {
       if (result.isConfirmed) {
-
         fetch(`https://localhost:8000/Admin/deleteProductColor/${idPC}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
         })
-          .then(response => response.json())
-          .then(data => {
+          .then((response) => response.json())
+          .then((data) => {
             console.log(data);
             if (data.value == 1) {
-              console.log('Product successfully deleted');
+              console.log("Product successfully deleted");
               Swal.fire({
                 title: "Xóa Thành Công",
                 icon: "success",
@@ -185,30 +174,23 @@ function ProductColorWorkingPage() {
                   // Thực hiện các thao tác cần thiết sau khi xóa thành công
                   clearForm();
                 }
-              })
+              });
             }
           })
-          .catch(error => {
-            console.error('Error deleting product:', error);
+          .catch((error) => {
+            console.error("Error deleting product:", error);
           });
       }
     });
   }
 
-
-
-
-
-
-
-
-
   return (
     <div>
       {idPC ? <h1>MÃ Product-Color {idPC}</h1> : null}
-      <form className="ProductColorWorkingPage-Container" onSubmit={handleSubmit}>
-
-
+      <form
+        className="ProductColorWorkingPage-Container"
+        onSubmit={handleSubmit}
+      >
         <div className="ProductColorWorkingPage-Item">
           <label htmlFor="product-code">Mã sản phẩm:</label>
           <input

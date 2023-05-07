@@ -70,8 +70,7 @@ const ProductWorkingPage = () => {
   //  lấy id của sản phẩm
   const { id } = useParams();
 
-
-  const [productWithID, setProductWithID] = useState([])
+  const [productWithID, setProductWithID] = useState([]);
   //   khu vực lấy data khi click chọn 1 product
   useEffect(() => {
     if (!id) {
@@ -79,22 +78,20 @@ const ProductWorkingPage = () => {
     }
     async function fetchProduct() {
       try {
-        const response = await fetch(`https://localhost:8000/Admin/getInforProduct/${id}`);
+        const response = await fetch(
+          `https://localhost:8000/Admin/getInforProduct/${id}`
+        );
         const data = await response.json();
 
-        setProductWithID(data)
+        setProductWithID(data);
         autoUpdateFrom(data);
       } catch (error) {
         console.error(error);
         //  chỉ test xem thôi
-
       }
     }
     fetchProduct();
   }, [id]);
-
-
-
 
   function autoUpdateFrom(data) {
     if (data.name) {
@@ -173,13 +170,13 @@ const ProductWorkingPage = () => {
   // hàm này dùng để thêm or sửa sản phẩm
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("id la ", id)
+    console.log("id la ", id);
 
     if (id == undefined) {
-      console.log("có vo if")
+      console.log("có vo if");
       var rs = CheckSelectNameImage();
       if (rs == -1) {
-        console.log("có sai")
+        console.log("có sai");
         return;
       }
     }
@@ -210,14 +207,18 @@ const ProductWorkingPage = () => {
         others,
       };
 
-      if (!id) { // thêm sp
-        const response = await fetch("https://localhost:8000/Admin/addProduct", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+      if (!id) {
+        // thêm sp
+        const response = await fetch(
+          "https://localhost:8000/Admin/addProduct",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
 
         const responseData = await response.json();
         console.log(responseData);
@@ -234,7 +235,7 @@ const ProductWorkingPage = () => {
               // Thực hiện các thao tác cần thiết sau khi xóa thành công
               clearForm();
             }
-          })
+          });
         } else {
           Swal.fire({
             title: "Thêm Thất Bại",
@@ -243,19 +244,22 @@ const ProductWorkingPage = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "OK",
-          })
+          });
         }
       }
 
       // cập nhật sp
       if (id) {
-        const response = await fetch("https://localhost:8000/Admin/updateProduct", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          "https://localhost:8000/Admin/updateProduct",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
 
         const responseData = await response.json();
         console.log(responseData);
@@ -272,7 +276,7 @@ const ProductWorkingPage = () => {
               // Thực hiện các thao tác cần thiết sau khi xóa thành công
               clearForm();
             }
-          })
+          });
         } else {
           Swal.fire({
             title: "Cập Nhật Thất Bại",
@@ -281,10 +285,9 @@ const ProductWorkingPage = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "OK",
-          })
+          });
         }
       }
-
     } catch (error) {
       console.log(error);
       clearForm();
@@ -338,8 +341,6 @@ const ProductWorkingPage = () => {
     }
   };
 
-
-
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -390,18 +391,17 @@ const ProductWorkingPage = () => {
       if (result.isConfirmed) {
         // clearForm();
 
-
         fetch(`https://localhost:8000/Admin/deleteProduct/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
         })
-          .then(response => response.json())
-          .then(data => {
+          .then((response) => response.json())
+          .then((data) => {
             console.log(data);
             if (data.value == 1) {
-              console.log('Product successfully deleted');
+              console.log("Product successfully deleted");
               Swal.fire({
                 title: "Xóa Thành Công",
                 icon: "success",
@@ -414,27 +414,29 @@ const ProductWorkingPage = () => {
                   // Thực hiện các thao tác cần thiết sau khi xóa thành công
                   clearForm();
                 }
-              })
+              });
             }
           })
-          .catch(error => {
-            console.error('Error deleting product:', error);
+          .catch((error) => {
+            console.error("Error deleting product:", error);
           });
-
-
       }
     });
   }
 
   function CheckSelectNameImage() {
-    if (descriptionImage.length !== 2 || file.length !== 2) {
+    console.log(type);
+    if (
+      type == "phone" &&
+      (descriptionImage.length !== 2 || file.length !== 2)
+    ) {
       Swal.fire({
         title: "Vui lòng chọn đúng 2 hình và chọn name cho hình ảnh",
         icon: "warning",
         showCancelButton: false,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
-      })
+      });
 
       return -1;
     }
@@ -477,8 +479,8 @@ const ProductWorkingPage = () => {
             <select
               className="selectType"
               id="type"
-              value={typeUI}
-              onChange={(event) => setTypeUI(event.target.value)}
+              value={type}
+              onChange={(event) => setType(event.target.value)}
             >
               <option value="phone">Phone</option>
               <option value="laptop">Laptop</option>

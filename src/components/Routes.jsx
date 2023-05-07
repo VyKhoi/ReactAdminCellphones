@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import Dashboard from "../pages/Dashboard";
 import Customers from "../pages/Customers";
@@ -13,10 +13,15 @@ import ProductColorBranchWorkingPage from "../pages/ProductColorBranchWorkingPag
 import StatisticalPage from "../pages/StatisticalPage";
 import StatisticalMonthOfBranch from "../pages/StatisticalMonthOfBranch";
 import StatisticalCommonProductSales from "../pages/StatisticalCommonProductSales";
+import Login from "../pages/UserLogin";
+import Layout from "./layout/Layout";
 const Routes = () => {
   return (
     <Switch>
+      {/* <Redirect to="/login" /> */}
       <Route path="/" exact component={Dashboard} />
+      <Route exact path="/layout" component={Dashboard} />
+
       <Route path="/customers" component={Customers} />
       <Route path="/products" component={Products}></Route>
       <Route path="/products-color" component={ProductColor}></Route>
