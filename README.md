@@ -23,6 +23,9 @@ npm start
 ```
 
 # Preview
+
+Video demo : https://www.youtube.com/watch?v=-vwe2FJT6mM
+
 1 Login : ( username : cuong123, password : 12345678)
 <img width="658" alt="image" src="https://user-images.githubusercontent.com/89650460/236718929-f4343604-d379-4f93-8c73-aa0cd4fc342a.png">
 
