@@ -14,35 +14,35 @@ function Login(props) {
 
   const { user, setUser } = useContext(UserContext);
   const history = useHistory();
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [userName, setUsername] = useState(null);
+  const [passWord, setPassword] = useState(null);
 
   const [checkLogin, setCheckLogin] = useState(1);
 
   function handleSubmit(event) {
-    console.log({ username, password });
+    console.log({ userName, passWord });
 
     event.preventDefault();
-    fetch("https://localhost:8000/home/login/", {
+    fetch("https://localhost:7242/api/v1/auth/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ userName, passWord }),
       mode: "cors",
       credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("dât fetch dc", data);
-        let user_curent = JSON.parse(data.user); //dôi tuong
+        // console.log("dât fetch dc", data);
+        // let user_curent = JSON.parse(data.data); //dôi tuong
 
-        localStorage.setItem("user", JSON.stringify(user_curent)); // luu vao local json
-        setUser(user_curent);
+        // localStorage.setItem("user", JSON.stringify(user_curent)); // luu vao local json
+        setUser(data.data);
         console.log("user trong context ", user);
         setCheckLogin(1);
 
-        if (user && user.role_id === "manager") {
+        if (user && user.userRoles[0] === "manager") {
           console.log("co vô đây");
           props.setIsLoggedIn(true);
           history.push("/layout");
@@ -84,7 +84,7 @@ function Login(props) {
                       <input
                         type="text"
                         placeholder="Email"
-                        value={username}
+                        value={userName}
                         onChange={(e) => setUsername(e.target.value)}
                       />
                     </div>
@@ -93,7 +93,7 @@ function Login(props) {
                       <input
                         type="password"
                         placeholder="Password"
-                        value={password}
+                        value={passWord}
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>

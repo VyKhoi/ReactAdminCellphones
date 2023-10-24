@@ -26,13 +26,25 @@ const Customers = () => {
 
   const [customerList, setCustomerList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const requestBody = {
+    PageSize: 100,
+    PageIndex: 1,
+  };
+  
   useEffect(() => {
     // Gọi API hoặc lấy dữ liệu từ database tại đây
     // Ví dụ:
-    fetch('https://localhost:8000/Admin/getAllCustomer')
+    fetch('https://localhost:7242/customer/search/name', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
       .then(res => res.json())
       .then((data) => {
-        setCustomerList(data)
+        setCustomerList(data.data)
         setIsLoading(false)
       }
       )

@@ -20,20 +20,31 @@ const Products = () => {
     <tr key={index} onClick={() => handleClickProduct(item.id)}>
       <td>{item.id}</td>
       <td>{item.name}</td>
-      <td>{item.nameManufactureId}</td>
+      <td>{item.manufactureName}</td>
       <td>{item.type}</td>
     </tr>
   );
 
   const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const requestBody = {
+    PageSize: 100,
+    PageIndex: 1,
+  };
   useEffect(() => {
     // Gọi API hoặc lấy dữ liệu từ database tại đây
     // Ví dụ:
-    fetch("https://localhost:8000/Admin/getProduct")
+ 
+    fetch("https://localhost:7242/product/products", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
       .then((res) => res.json())
       .then((data) => {
-        setProductList(data);
+        setProductList(data.data);
         setIsLoading(false);
       })
       .catch((err) => console.error(err));

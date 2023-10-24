@@ -52,7 +52,7 @@ const ProductWorkingPage = () => {
   //  thực  hiện fectch xuống csdl để lấy tất cả thông tin sp
   const [name, setName] = useState("");
   const [manufacture, setManufacture] = useState("");
-  const [type, setType] = useState("phone");
+  const [type, setType] = useState(0);
   const [file, setFile] = useState([]);
   const [descriptionImage, setDescriptionImage] = useState("");
   const [title, setTitle] = useState("");
@@ -79,7 +79,7 @@ const ProductWorkingPage = () => {
     async function fetchProduct() {
       try {
         const response = await fetch(
-          `https://localhost:8000/Admin/getInforProduct/${id}`
+          `https://localhost:7242/product/getinforproduct/${id}`
         );
         const data = await response.json();
 
@@ -94,65 +94,49 @@ const ProductWorkingPage = () => {
   }, [id]);
 
   function autoUpdateFrom(data) {
-    if (data.name) {
-      setName(data.name);
+    if (data.Name) {
+      setName(data.Name);
     }
-    if (data.manufacture) {
-      setManufacture(data.manufacture);
+    if (data.ManufactureName) {
+      setManufacture(data.ManufactureName);
     }
     if (data.type) {
       setType(data.type);
     }
-    // if (data.images) {
-    //   var link = [];
-    //   for (var i = 0; i < data.images.length; i++) {
-    //     link.push(data.images[i].urls);
-    //   }
-    //   setFile(link);
-
-    //   var l = [];
-    //   for (var i = 0; i < data.images.length; i++) {
-    //     l.push(data.images[i].nameImage);
-    //   }
-    //   setDescriptionImage(l);
-    // }
-
-    // if (data.descriptionImage) {
-    //   setDescriptionImage(data.descriptionImage);
-    // }
-    if (data.title) {
-      setTitle(data.title);
+   
+    if (data.Title) {
+      setTitle(data.Title);
     }
-    if (data.content) {
-      setContent(data.content);
+    if (data.Content) {
+      setContent(data.Content);
     }
-    if (data.cpu) {
-      setCpu(data.cpu);
+    if (data.CPU) {
+      setCpu(data.CPU);
     }
-    if (data.ram) {
-      setRam(data.ram);
+    if (data.RAM) {
+      setRam(data.RAM);
     }
-    if (data.rom) {
-      setRom(data.rom);
+    if (data.ROM) {
+      setRom(data.ROM);
     }
-    if (data.graphicCard) {
-      setGraphicCard(data.graphicCard);
+    if (data.GraphicCard) {
+      setGraphicCard(data.GraphicCard);
     }
-    if (data.battery) {
-      setBattery(data.battery);
+    if (data.Battery) {
+      setBattery(data.Battery);
     }
-    if (data.os) {
-      setOs(data.os);
+    if (data.OperatorSystem) {
+      setOs(data.OperatorSystem);
     }
-    if (data.others) {
-      setOthers(data.others);
+    if (data.Others) {
+      setOthers(data.Others);
     }
   }
 
   function clearForm() {
     setName("");
     setManufacture("");
-    setType("phone");
+    setType(0);
     setFile([]);
     setDescriptionImage("");
     setTitle("");
@@ -191,26 +175,26 @@ const ProductWorkingPage = () => {
       }
       //   var dsImageJson = JSON.stringify(dsImage);
       const data = {
-        id,
-        name,
-        manufacture,
-        type,
-        images: dsImage,
-        title,
-        content,
-        cpu,
-        ram,
-        rom,
-        graphicCard,
-        battery,
-        os,
-        others,
+        Id: id,
+        Name: name,
+        ManufactureName: manufacture,
+        Type: type,
+        Images: dsImage,
+        Title: title,
+        Content: content,
+        CPU : cpu,
+       RAM : ram,
+       ROM : rom,
+       GraphicCard : graphicCard,
+       Battery :   battery,
+       OperatorSystem :  os,
+       Others:  others,
       };
 
       if (!id) {
         // thêm sp
         const response = await fetch(
-          "https://localhost:8000/Admin/addProduct",
+          "https://localhost:7242/product",
           {
             method: "POST",
             headers: {
@@ -482,8 +466,8 @@ const ProductWorkingPage = () => {
               value={type}
               onChange={(event) => setType(event.target.value)}
             >
-              <option value="phone">Phone</option>
-              <option value="laptop">Laptop</option>
+              <option value= "0">Phone</option>
+              <option value="1">Laptop</option>
             </select>
           </div>
         </div>
