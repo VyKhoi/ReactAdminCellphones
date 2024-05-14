@@ -55,7 +55,7 @@ function StatisticalMonthOfBranch() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://localhost:8000/Admin/statisticalBranchsOfMonth/${selectedYear}/${month}`);
+        const response = await fetch(`https://localhost:7242/statistical/statisticalBranchsOfMonth/${selectedYear}/${month}`);
         const jsonData = await response.json();
 
 

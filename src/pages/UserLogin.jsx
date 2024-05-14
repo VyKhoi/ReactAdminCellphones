@@ -29,8 +29,7 @@ function Login(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ userName, passWord }),
-      mode: "cors",
-      credentials: "include",
+
     })
       .then((response) => response.json())
       .then((data) => {

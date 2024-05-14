@@ -11,10 +11,12 @@ function ProductColorWorkingPage() {
   //data là PC gọi lên khi click
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(`https://localhost:8000/Admin/getProductColor/${idPC}`)
+    fetch(`https://localhost:7242/productcolor/${idPC}`)
       .then((response) => response.json())
       .then((data) => {
-        setProductCode(data.idProductId);
+        data = data.data;
+
+        setProductCode(data.productId);
         setProductColor(data.nameColorId);
         setProductPrice(data.price);
         setData(data);
@@ -48,12 +50,12 @@ function ProductColorWorkingPage() {
       const dataToSend = {
         id: 0,
         price: parseFloat(productPrice),
-        idProduct_Id: parseInt(productCode),
-        nameColor_Id: productColor,
+        productId: parseInt(productCode),
+        nameColorId: productColor,
       };
 
       console.log(dataToSend);
-      fetch("https://localhost:8000/Admin/addProductColor", {
+      fetch("https://localhost:7242/productcolor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +65,7 @@ function ProductColorWorkingPage() {
         .then((response) => response.json())
         .then((data) => {
           console.log("Response:", data);
-          if (data.value == 1) {
+          if (data.result.data == 1) {
             Swal.fire({
               title: "Thêm Thành Công",
               icon: "success",
@@ -91,17 +93,17 @@ function ProductColorWorkingPage() {
         .catch((error) => console.error(error));
     }
 
-    // cập nhật sửa  sản phẩm-color
+    // cập nhật sửa  sản phẩm-color{"text":"public.\"BranchPromotionProduct\"","objUrl":"/browser/table/obj/1/1/16398/2200/16406","nodeType":"table","cur":{"from":31,"to":31}}
     if (idPC) {
       const dataToSend = {
-        id: idPC,
-        price: parseFloat(productPrice),
-        idProduct_Id: parseInt(productCode),
-        nameColor_Id: productColor,
+        Id: idPC,
+        Price: parseFloat(productPrice),
+        ProductId: parseInt(productCode),
+        NameColorId: productColor,
       };
 
       console.log(dataToSend);
-      fetch("https://localhost:8000/Admin/updateProductColor", {
+      fetch("https://localhost:7242/productcolor/updateproductcolor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +113,8 @@ function ProductColorWorkingPage() {
         .then((response) => response.json())
         .then((data) => {
           console.log("Response:", data);
-          if (data.value == 1) {
+          data = data.result;
+          if (data.data == 1) {
             Swal.fire({
               title: "Sửa Thành Công",
               icon: "success",
@@ -151,7 +154,7 @@ function ProductColorWorkingPage() {
       confirmButtonText: "Xóa",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://localhost:8000/Admin/deleteProductColor/${idPC}`, {
+        fetch(`https://localhost:7242/productcolor/deleteproductcolor/${idPC}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -216,7 +219,7 @@ function ProductColorWorkingPage() {
             <option value="Đen">Đen</option>
             <option value="Trắng">Trắng</option>
             <option value="Vàng">Vàng</option>
-            <option value="xanh">Xanh</option>
+            <option value="Xanh">Xanh</option>
             <option value="Xám">Xám</option>
           </select>
         </div>

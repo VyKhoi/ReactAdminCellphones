@@ -11,6 +11,7 @@ const productColorBranchTableHead = [
   "Price",
   "Type",
   "amount",
+  "IsActive",
 ];
 
 const ProductColorBranch = () => {
@@ -32,6 +33,8 @@ const ProductColorBranch = () => {
       <td>{item.price}</td>
       <td>{item.type}</td>
       <td>{item.amount}</td>
+      <td>{item.isActive ? "Yes" : "No"}</td>
+
     </tr>
   );
 
@@ -53,9 +56,11 @@ const ProductColorBranch = () => {
   useEffect(() => {
     // Gọi API hoặc lấy dữ liệu từ database tại đây
     // Ví dụ:
-    fetch('https://localhost:8000/Admin/getBranchProductColor')
+    fetch('https://localhost:7242/branchproductcolor')
       .then(res => res.json())
       .then((data) => {
+        console.log("co lay duoc data de render", data)
+        data = data.result.data
         setListproductColorBranch(data)
         setIsLoading(false)
       }

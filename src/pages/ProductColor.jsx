@@ -9,18 +9,22 @@ const productColorTableHead = [
   "Color",
   "Price",
   "Type",
+  "isActive"
 ];
 const ProductColor = () => {
   const renderHead = (item, index) => <th key={index}>{item}</th>;
   const history = useHistory();
   const renderBody = (item, index) => (
-    <tr key={index} onClick={() => HandleClickProductColor(item.IdPC)}>
-      <td>{item.IdPC}</td>
-      <td>{item.nameProduct}</td>
-      <td>{item.nameColor}</td>
-      <td>{item.price}</td>
-      <td>{item.type}</td>
-    </tr>
+ 
+  <tr key={index} onClick={() => HandleClickProductColor(item.pcId)}>
+    <td>{item.pcId}</td>
+    <td>{item.nameProduct}</td>
+    <td>{item.nameColorId}</td>
+    <td>{item.price}</td>
+    <td>{item.type}</td>
+    <td>{item.isActive ? "Yes" : "No"}</td>
+  </tr>
+  
   );
 
   function HandleClickProductColor(idPC) {
@@ -38,14 +42,17 @@ const ProductColor = () => {
   useEffect(() => {
     // Gọi API hoặc lấy dữ liệu từ database tại đây
     // Ví dụ:
-    fetch('https://localhost:8000/Admin/getProductColor')
+    fetch('https://localhost:7242/productcolor')
       .then(res => res.json())
       .then((data) => {
-        setProductColorList(data)
+        console.log("co lay duoc data de render",data.result.data)
+
+        setProductColorList(data.result.data)
         setIsLoading(false)
+ 
       }
       )
-      .catch(err => console.error(err));
+      .catch(err => console.error("lỗi rồi productcolor",err));
   }, []); // Lưu ý tham số thứ hai của useEffect, truyền vào một mảng rỗng để useEffect chỉ chạy một lần khi component được mount
 
 

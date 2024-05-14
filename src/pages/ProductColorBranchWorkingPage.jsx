@@ -15,7 +15,7 @@ function ProductColorBranchWorkingPage() {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (idbpc) {
-      fetch(`https://localhost:8000/Admin/getInforOfAProductColorInBranch/${idbpc}`)
+      fetch(`https://localhost:7242/branchproductcolor/getinforofaproductcolorinbranch/${idbpc}`)
         .then(response => response.json())
         .then(data => {
 
@@ -28,10 +28,10 @@ function ProductColorBranchWorkingPage() {
   }, []);
 
   useEffect(() => {
-    fetch(`https://localhost:8000/Admin/getProductColor-Product/${idProductColor}`)
+    fetch(`https://localhost:7242/branchproductcolor/getproductcolor-product/${idProductColor}`)
       .then(response => response.json())
       .then(data => {
-
+        data = data.data;
         // setIdBranch(data.idBranch)
         setData(data)
       })
@@ -68,7 +68,7 @@ function ProductColorBranchWorkingPage() {
       };
 
       console.log(dataToSend)
-      fetch('https://localhost:8000/Admin/addInforOfAProductColorInBranch', {
+      fetch('https://localhost:7242/branchproductcolor/addInforOfAProductColorInBranch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ function ProductColorBranchWorkingPage() {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        fetch(`https://localhost:8000/Admin/deleteInforOfAProductColorInBranch/${idbpc}`, {
+        fetch(`https://localhost:7242/branchproductcolor/deleteInforOfAProductColorInBranch/${idbpc}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'

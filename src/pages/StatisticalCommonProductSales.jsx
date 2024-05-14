@@ -63,7 +63,7 @@ function StatisticalCommonProductSales() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://localhost:8000/Admin/statisticalTop5/${selectedYear}/${month}/${branchId}`);
+        const response = await fetch(`https://localhost:7242/statistical/statisticalTop5/${selectedYear}/${month}/${branchId}`);
         const jsonData = await response.json();
 
 

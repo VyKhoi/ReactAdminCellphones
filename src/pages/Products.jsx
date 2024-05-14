@@ -4,7 +4,7 @@ import Table from "../components/table/Table";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import "./css/Products.css";
 
-const productHeader = ["Id", "Name", "Name Manufacture", "Type"];
+const productHeader = ["Id", "Name", "Name Manufacture", "Type","IsActive"];
 const Products = () => {
   const history = useHistory();
 
@@ -22,6 +22,9 @@ const Products = () => {
       <td>{item.name}</td>
       <td>{item.manufactureName}</td>
       <td>{item.type}</td>
+      <td>{item.isActive ? "Yes" : "No"}</td>
+
+
     </tr>
   );
 

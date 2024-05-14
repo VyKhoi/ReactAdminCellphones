@@ -53,6 +53,8 @@ const ProductWorkingPage = () => {
   const [name, setName] = useState("");
   const [manufacture, setManufacture] = useState("");
   const [type, setType] = useState(0);
+  const [del , setDelete]  = useState(false);
+
   const [file, setFile] = useState([]);
   const [descriptionImage, setDescriptionImage] = useState("");
   const [title, setTitle] = useState("");
@@ -100,8 +102,14 @@ const ProductWorkingPage = () => {
     if (data.ManufactureName) {
       setManufacture(data.ManufactureName);
     }
-    if (data.type) {
-      setType(data.type);
+    if (data.Type) {
+      console.log("type", data.Type); 
+      setType(data.Type);
+    }
+
+    if (data.IsActive) {
+      console.log("type", data.IsActive); 
+      setDelete(data.IsActive);
     }
    
     if (data.Title) {
@@ -235,7 +243,7 @@ const ProductWorkingPage = () => {
       // cập nhật sp
       if (id) {
         const response = await fetch(
-          "https://localhost:8000/Admin/updateProduct",
+          "https://localhost:7242/updateProduct",
           {
             method: "POST",
             headers: {
@@ -247,7 +255,7 @@ const ProductWorkingPage = () => {
 
         const responseData = await response.json();
         console.log(responseData);
-        if (responseData.value == 1) {
+        if (responseData.result.data == 1) {
           Swal.fire({
             title: "Cập Nhật Sản Phẩm Thành Công",
             icon: "success",
@@ -375,7 +383,7 @@ const ProductWorkingPage = () => {
       if (result.isConfirmed) {
         // clearForm();
 
-        fetch(`https://localhost:8000/Admin/deleteProduct/${id}`, {
+        fetch(`https://localhost:7242/deleteProduct/${id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -384,7 +392,7 @@ const ProductWorkingPage = () => {
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
-            if (data.value == 1) {
+            if (data.data == 1) {
               console.log("Product successfully deleted");
               Swal.fire({
                 title: "Xóa Thành Công",
@@ -469,6 +477,17 @@ const ProductWorkingPage = () => {
               <option value= "0">Phone</option>
               <option value="1">Laptop</option>
             </select>
+
+            <label htmlFor="delete">Delete:</label>
+            <select
+              className="selectType"
+              id="delete"
+              value={del}
+              onChange={(event) => setDelete(event.target.value)}
+            >
+              <option value= "0">True</option>
+              <option value="1">False</option>
+            </select>
           </div>
         </div>
 
@@ -479,7 +498,7 @@ const ProductWorkingPage = () => {
               display: id ? "none" : "block",
             }}
           >
-            <label htmlFor="files">Files:</label>
+            <label htmlFor="files">Hình ảnh:</label>
             <input
               type="file"
               id="files"
@@ -489,7 +508,7 @@ const ProductWorkingPage = () => {
             />
 
             <div>
-              <h3>Select mô tả màu sản phẩm</h3>
+              <h3>Chọn mô tả màu sản phẩm</h3>
               {file.map((fileItem, index) => (
                 <div key={index}>
                   <label>{fileItem.name}</label>
